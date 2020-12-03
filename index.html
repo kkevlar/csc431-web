@@ -1,4 +1,4 @@
-<h1 id="-owie">&#39;OWIE</h1>
+﻿<!DOCTYPE html>                            <html>                                <head>                                    <meta charset="UTF-8">                                    <title>README</title>                                    <link rel="stylesheet" href="./style/style.css">                                    <link rel="stylesheet" href="./style/kimbie.dark.css">                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">                                    <style>*,body{margin:0;padding:0}.markdown-content,*{font-family:Vazir}*{box-sizing:border-box}html{font-size:14px}.markdown-content p,.rtl ol li,.rtl ul li{font-size:1.1rem}body{direction:rtl;color:#24292e}.ltr{direction:ltr!important}.rtl{direction:rtl!important}@media screen and (max-width:600px){body{padding:10px}}@media screen and (min-width:601px){body{padding:50px}}@font-face{font-family:Vazir;src:url(fonts/Vazir.woff)}@font-face{font-family:DejaVuSansMono;src:url(fonts/DejaVuSansMono.ttf)}.markdown-content{width:100%;outline-offset:-22px;padding:15px;line-height:3rem}code,code span,pre code span,ul li pre code{font-family:DejaVuSansMono,Menlo,'Liberation Mono',Consolas,'DejaVu Sans Mono','Ubuntu Mono','Courier New','andale mono','lucida console',monospace!important}.markdown-content p{text-align:justify;padding:.5rem}.markdown-content img{margin:0 auto;display:block;max-width:90%}.rtl ul li{margin-right:3rem!important}.rtl ol li{margin-right:3rem}.ltr ol li,.ltr ul li{font-size:1.1rem;margin-left:3rem}.markdown-content h1,.markdown-content h2,.markdown-content h3{padding:12px;text-shadow:none}.markdown-content h1{padding-top:60px;color:rgba(22,19,19,.8);font-weight:900;font-size:2.1rem}.markdown-content h2{font-weight:500;color:rgba(22,19,19,.6);font-size:1.8rem}.markdown-content h3{font-weight:300;color:rgba(22,19,19,.4);font-size:1.5rem}.markdown-content h4,.markdown-content h5{font-weight:200;color:rgba(22,19,19,.4)}.markdown-content h4{font-size:1.3rem}.markdown-content h5{font-size:1.2rem}@media screen and (min-width:48rem){#list{width:20%}#content{width:100%}}@media screen and (min-width:80rem){#list.none{display:inline-block}#content{width:80%}}@media print{#list{display:none}#content{display:block;width:100%;margin:0 auto}#content li,#content p{font-size:1rem}}.manual-anchor{top:45px}.markdown-container{max-width:1448px;margin:0 auto}.manual-link-icon{color:#8f8f8f}.manual-link-icon:hover{color:#000}code,ul li pre code{white-space:pre;word-wrap:normal;padding:3px 7px;color:#24292e;background-color:rgba(27,31,35,.05);border-radius:3px;font-size:1rem}.markdown-content ul li pre,.manual ul li pre,pre{margin:0;direction:ltr!important}.markdown-content ul li pre code,.manual ul li pre code,pre code{direction:ltr!important;line-height:1.45;padding:1em 0 .5em 3em;position:relative;display:block;overflow-x:auto;overflow-y:auto}a{text-decoration:none}.title{float:left;color:#ccc}.markdown-container{padding-top:60px}.elements{padding:12px;position:fixed;top:0;right:0;left:0;background-color:#444;height:50px;z-index:1}.input{color:#fff}#savebutton,input{font-size:15px}#savebutton{padding:0 7px!important}#rtl-checkbox-container{margin:3px 15px!important;color:#fff}.button{background-color:#fff;color:#444;font-size:1.6rem;display:inline-block;text-align:center;line-height:2.1rem;border-radius:2px}.button:hover{cursor:pointer;background-color:#eee}#refresh-button{width:2.2rem;vertical-align:middle}@media print{.no-print,.no-print *{display:none!important}}.hljs-comment,.hljs-quote{color:#99ac5b}.hljs-meta,.hljs-name,.hljs-regexp,.hljs-selector-class,.hljs-selector-id,.hljs-tag,.hljs-template-variable,.hljs-variable{color:#dc3958}.hljs-built_in,.hljs-builtin-name,.hljs-deletion,.hljs-link,.hljs-literal,.hljs-number,.hljs-params,.hljs-type{color:#f79a32}.hljs-attribute,.hljs-section,.hljs-title{color:#f06431}.hljs-addition,.hljs-bullet,.hljs-string,.hljs-symbol{color:#9c9}.hljs-function,.hljs-keyword,.hljs-selector-tag{color:#98676a}.hljs{display:block;overflow-x:auto;background:#221a0f;color:#d3af86}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}</style>                                </head>                                <body><div class="markdown-container ltr"><div class="markdown-content"><h1 id="-owie">'OWIE</h1>
 <p><strong>we need to put in runtime instructions</strong>
 <strong>a bit of text for each chart? or some of them. some analysis</strong>
 <strong>word count charts and analysis</strong>
@@ -9,12 +9,12 @@
 <p>Our compiler is written in Makefile interspersed with little bits of Racket here and there. A full language breakdown is visible in Figure 1. We actually began the quarter by writing our compiler in C++, but we had a change of heart 2 days before Milestone 1 was due, and switched accordingly.</p>
 <p><strong>Figure 1</strong></p>
 <p><img src="images/language_breakdown.png" alt="language_breakdown"></p>
-<p><em>Here you can see Github&#39;s language breakdown for our compiler.</em></p>
+<p><em>Here you can see Github's language breakdown for our compiler.</em></p>
 <p><strong>Figure 2</strong></p>
 <p><img src="images/overview_diagram.png" alt="overview_diagram"></p>
 <p><em>This diagram gives an overview of our compiler. It displays the various phases of the compiler as well as what exactly is being passed between each phase.</em></p>
 <h3 id="parsing">Parsing</h3>
-<p>Our parser uses ANTLR and the provided Java parsing code to produce json files, which are then read into Racket using Racket&#39;s json library. These jsons are converted into hash tables which makes it easier to convert into our representation of an Abstract Syntax Tree (AST), which is a large number of structs representing all the different kinds of expressions, statements, as well as declarations and mini structs.</p>
+<p>Our parser uses ANTLR and the provided Java parsing code to produce json files, which are then read into Racket using Racket's json library. These jsons are converted into hash tables which makes it easier to convert into our representation of an Abstract Syntax Tree (AST), which is a large number of structs representing all the different kinds of expressions, statements, as well as declarations and mini structs.</p>
 <h3 id="static-semantics">Static Semantics</h3>
 <p>Our type checker takes in an AST and begins by building a symbol table, a struct table, and the list of functions. It then proceeds to validate both of the tables, the function main, and every other function. To validate functions, our type checker validates the declarations, then works through the statements and expressions, returning false if anything fails to typecheck. We perform return path checking via recursively checking for return equivalence on each statement in a block and succeeding if at least one statement is return equivalent.</p>
 <h3 id="intermediate-representation">Intermediate Representation</h3>
@@ -22,7 +22,7 @@
 <h3 id="optimizations">Optimizations</h3>
 <p>We implemented the two following compiler optimizations.</p>
 <h4 id="constant-propagation">Constant Propagation</h4>
-<p>We used Sparse Conditional Constant Propagation (SCCP). SCCP functions by tracking executable blocks and recording for each variable whether or not it&#39;s value is provably constant. To determine this, we abstractly interpret certain instructions, such as arithmetic and boolean instructions. The interpretation is abstract because, since many values are not known during static analysis, we use theoretical values called &quot;top&quot; and &quot;bottom&quot; to represent values which are not yet proved constant or not constant and values which are not provably constant, respectively. The result of interpreting instructions containing &quot;top&quot; and &quot;bottom&quot; is determined by special rules. Once the analysis is performed, all uses of registers that store constant values are replaced with the constants.</p>
+<p>We used Sparse Conditional Constant Propagation (SCCP). SCCP functions by tracking executable blocks and recording for each variable whether or not it's value is provably constant. To determine this, we abstractly interpret certain instructions, such as arithmetic and boolean instructions. The interpretation is abstract because, since many values are not known during static analysis, we use theoretical values called "top" and "bottom" to represent values which are not yet proved constant or not constant and values which are not provably constant, respectively. The result of interpreting instructions containing "top" and "bottom" is determined by special rules. Once the analysis is performed, all uses of registers that store constant values are replaced with the constants.</p>
 <h4 id="useless-code-elimination">Useless Code Elimination</h4>
 <p>We use mark and sweep to eliminate useless code. We find all the essential instructions and essentially go backwards through the code, marking any instructions they depend on as essential. Once everything has been marked or left unmarked, we delete all the instructions that are not marked essential.</p>
 <h3 id="code-generation-and-register-allocation">Code Generation and Register Allocation</h3>
@@ -45,7 +45,7 @@
 <li><strong>sccp</strong> - applies Sparse Conditional Constant propagation (ONLY)</li>
 <li><strong>uce</strong> - applies Useless Code Elimination (ONLY)</li>
 <li><strong>Oall</strong> - applies applying both sccp and uce</li>
-<li><strong>clang/gcc O0-O3</strong> - compiles the .c file with a &quot;real&quot; compiler and a level of optimization</li>
+<li><strong>clang/gcc O0-O3</strong> - compiles the .c file with a "real" compiler and a level of optimization</li>
 </ul>
 <h4 id="experiment-types">Experiment Types</h4>
 <ul>
@@ -61,7 +61,7 @@
 <h4 id="fact_sum">fact_sum</h4>
 <p><img src="images/plots/regular/fact_sum_plot.png" alt="fact_sum_plot">
 <img src="images/plots/longer/fact_sum_longer_plot.png" alt="longer_fact_sum_plot"></p>
-<p>This bench mark ran relatively quick, so it&#39;s unclear how appropriate it is to draw conclusions. However- it seems that our optimizations may slow down the runtime of this benchmark, while the C versions improve under optimizations.</p>
+<p>This bench mark ran relatively quick, so it's unclear how appropriate it is to draw conclusions. However- it seems that our optimizations may slow down the runtime of this benchmark, while the C versions improve under optimizations.</p>
 <h4 id="simps">simps</h4>
 <p><img src="images/plots/regular/simps_plot.png" alt="simps_plot"></p>
 <h4 id="mile1">mile1</h4>
@@ -90,7 +90,7 @@
 <h4 id="wasteofcycles">wasteOfCycles</h4>
 <p><img src="images/plots/regular/wasteOfCycles_plot.png" alt="wasteOfCycles_plot">
 <img src="images/plots/longer/wasteOfCycles_longer_plot.png" alt="longer_wasteOfCycles_plot"></p>
-<p>This benchmark runs very quickly- but it&#39;s possible our optimizations slow down the runtime?</p>
+<p>This benchmark runs very quickly- but it's possible our optimizations slow down the runtime?</p>
 <!-- ![iandj_plot](images/plots/regular/iandj_plot.png) -->
 <!-- ![ez_profanity_plot](images/plots/regular/ez_profanity_plot.png) -->
 <h4 id="programbreaker">programBreaker</h4>
@@ -99,7 +99,7 @@
 <h4 id="fibonacci">Fibonacci</h4>
 <p><img src="images/plots/regular/Fibonacci_plot.png" alt="Fibonacci_plot">
 <img src="images/plots/longer/Fibonacci_longer_plot.png" alt="longer_Fibonacci_plot"></p>
-<p>Even GCC and Clang struggle to optimize this benchmark. However- it&#39;s clear that those optimizations perform better than ours.</p>
+<p>Even GCC and Clang struggle to optimize this benchmark. However- it's clear that those optimizations perform better than ours.</p>
 <h4 id="biggest">biggest</h4>
 <p><img src="images/plots/regular/biggest_plot.png" alt="biggest_plot">
 <img src="images/plots/longer/biggest_longer_plot.png" alt="longer_biggest_plot"></p>
@@ -113,10 +113,10 @@
 <h4 id="generalfunctandoptimize">GeneralFunctAndOptimize</h4>
 <p><img src="images/plots/regular/GeneralFunctAndOptimize_plot.png" alt="GeneralFunctAndOptimize_plot">
 <img src="images/plots/longer/GeneralFunctAndOptimize_longer_plot.png" alt="longer_GeneralFunctAndOptimize_plot"></p>
-<p>Interestingly, our ARM assembly performs significantly slower than gcc/clang&#39;s O0 for this benchmark.</p>
+<p>Interestingly, our ARM assembly performs significantly slower than gcc/clang's O0 for this benchmark.</p>
 <h4 id="profanity">profanity</h4>
 <p><img src="images/plots/regular/profanity_plot.png" alt="profanity_plot"></p>
-<p>We suspect that the number of spills causes stack and register based assembly to perform similarly for this benchmark. For the ARM stack approach and the LLVM register approach- it appears that the SCCP optimization doesn&#39;t need the UCE optimization to improve runtime.</p>
+<p>We suspect that the number of spills causes stack and register based assembly to perform similarly for this benchmark. For the ARM stack approach and the LLVM register approach- it appears that the SCCP optimization doesn't need the UCE optimization to improve runtime.</p>
 <h4 id="bert">bert</h4>
 <p><img src="images/plots/regular/bert_plot.png" alt="bert_plot">
 <img src="images/plots/longer/bert_longer_plot.png" alt="longer_bert_plot"></p>
@@ -131,7 +131,7 @@
 <h4 id="primes">primes</h4>
 <p><img src="images/plots/regular/primes_plot.png" alt="primes_plot">
 <img src="images/plots/longer/primes_longer_plot.png" alt="longer_primes_plot"></p>
-<p>This plot looks similar to the mixed plot. For whatever reason, our own ARM generation is able to out perform clang&#39;s ARM generation (when it uses our LLVM IR).</p>
+<p>This plot looks similar to the mixed plot. For whatever reason, our own ARM generation is able to out perform clang's ARM generation (when it uses our LLVM IR).</p>
 <h4 id="optimizationbenchmark">OptimizationBenchmark</h4>
 <p><img src="images/plots/regular/OptimizationBenchmark_plot.png" alt="OptimizationBenchmark_plot">
 <img src="images/plots/longer/OptimizationBenchmark_longer_plot.png" alt="longer_OptimizationBenchmark_plot"></p>
@@ -194,53 +194,53 @@
 <h2 id="appendix-a-additional-mini-programs-used-in-testing">Appendix A: Additional Mini Programs Used in Testing</h2>
 <h3 id="profanity">Profanity</h3>
 <p>profanity.mini</p>
-<pre><code>fun PrintOnesOnly(int width) void
-{
-    PrintLine(width, <span class="hljs-number">101000</span>, <span class="hljs-number">0</span>, false, true);
+<pre><code class=" hljs "><span class="hljs-function">fun <span class="hljs-title">PrintOnesOnly</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width)</span> <span class="hljs-keyword">void</span>
+</span>{
+    PrintLine(width, <span class="hljs-number">101000</span>, <span class="hljs-number">0</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);
 }
 
-fun PrintLeftAnd(int width, int leftcount, int num, int thicc) void
-{
-    int i;
+<span class="hljs-function">fun <span class="hljs-title">PrintLeftAnd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width, <span class="hljs-keyword">int</span> leftcount, <span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> thicc)</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
     i = <span class="hljs-number">0</span>;
-    while (i &lt; leftcount)
+    <span class="hljs-keyword">while</span> (i &lt; leftcount)
     {
         print <span class="hljs-number">1</span>;
         i = i + <span class="hljs-number">1</span>;
     }
-    PrintLine(width - leftcount, num - leftcount, thicc, false, false);
+    PrintLine(width - leftcount, num - leftcount, thicc, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>);
 }
 
-fun PrintLine(int width, int num, int thicc, bool mirrored,
-              bool oppositeday) void
-{
-    int i;
-    bool temp;
-    bool do0;
+<span class="hljs-function">fun <span class="hljs-title">PrintLine</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width, <span class="hljs-keyword">int</span> num, <span class="hljs-keyword">int</span> thicc, <span class="hljs-keyword">bool</span> mirrored,
+              <span class="hljs-keyword">bool</span> oppositeday)</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+    <span class="hljs-keyword">bool</span> temp;
+    <span class="hljs-keyword">bool</span> do0;
 
     i = <span class="hljs-number">0</span>;
-    while (i &lt;= width)
+    <span class="hljs-keyword">while</span> (i &lt;= width)
     {
     temp = (i &lt; num || (mirrored &amp;&amp; i &gt; width - num));
     do0 = ((!temp) &amp;&amp; (i &lt; num + thicc || (i &gt; width - num - thicc &amp;&amp; mirrored))) ;
-        if ((oppositeday &amp;&amp; do0) || (!oppositeday &amp;&amp; !do0))
+        <span class="hljs-keyword">if</span> ((oppositeday &amp;&amp; do0) || (!oppositeday &amp;&amp; !do0))
         {
-            if (i == width)
+            <span class="hljs-keyword">if</span> (i == width)
             {
-                print <span class="hljs-number">0</span> endl;
+                print <span class="hljs-number">0</span> <span class="hljs-built_in">endl</span>;
             }
-            else
+            <span class="hljs-keyword">else</span>
             {
                 print <span class="hljs-number">0</span>;
             }
         }
-        else
+        <span class="hljs-keyword">else</span>
         {
-            if (i == width)
+            <span class="hljs-keyword">if</span> (i == width)
             {
-                print <span class="hljs-number">1</span> endl;
+                print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
             }
-            else
+            <span class="hljs-keyword">else</span>
             {
                 print <span class="hljs-number">1</span>;
             }
@@ -249,14 +249,14 @@ fun PrintLine(int width, int num, int thicc, bool mirrored,
     }
 }
 
-fun PrintF() void
-{
-    int i;
+<span class="hljs-function">fun <span class="hljs-title">PrintF</span><span class="hljs-params">()</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
     PrintOnesOnly(<span class="hljs-number">40</span>);
     PrintOnesOnly(<span class="hljs-number">40</span>);
 
     i = <span class="hljs-number">0</span>;
-    while (i &lt; <span class="hljs-number">6</span>)
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">6</span>)
     {
         PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
         i = i + <span class="hljs-number">1</span>;
@@ -266,22 +266,22 @@ fun PrintF() void
     PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">20</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
 
     i = <span class="hljs-number">0</span>;
-    while (i &lt; <span class="hljs-number">20</span> - <span class="hljs-number">6</span> - <span class="hljs-number">6</span>)
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">20</span> - <span class="hljs-number">6</span> - <span class="hljs-number">6</span>)
     {
         PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
         i = i + <span class="hljs-number">1</span>;
     }
 }
 
-fun PrintC() void
-{
-    int i;
+<span class="hljs-function">fun <span class="hljs-title">PrintC</span><span class="hljs-params">()</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
     PrintOnesOnly(<span class="hljs-number">40</span>);
     PrintOnesOnly(<span class="hljs-number">40</span>);
     PrintOnesOnly(<span class="hljs-number">40</span>);
 
     i = <span class="hljs-number">0</span>;
-    while (i &lt; <span class="hljs-number">12</span>)
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">12</span>)
     {
         PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">6</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
         i = i + <span class="hljs-number">1</span>;
@@ -292,48 +292,48 @@ fun PrintC() void
     PrintOnesOnly(<span class="hljs-number">40</span>);
 }
 
-fun PrintU() void
-{
-    int i;
-    int j;
-    int to;
+<span class="hljs-function">fun <span class="hljs-title">PrintU</span><span class="hljs-params">()</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+    <span class="hljs-keyword">int</span> j;
+    <span class="hljs-keyword">int</span> to;
     i = <span class="hljs-number">0</span>;
-    while (i &lt; <span class="hljs-number">21</span>)
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">21</span>)
     {
-        if (i &lt; <span class="hljs-number">8</span>)
+        <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">8</span>)
         {
             to = <span class="hljs-number">3</span>;
         }
-        else
+        <span class="hljs-keyword">else</span>
         {
-            if (i / <span class="hljs-number">3</span> * <span class="hljs-number">3</span> == i)
+            <span class="hljs-keyword">if</span> (i / <span class="hljs-number">3</span> * <span class="hljs-number">3</span> == i)
             {
                 to = <span class="hljs-number">1</span>;
             }
-            else
+            <span class="hljs-keyword">else</span>
             {
                 to = <span class="hljs-number">0</span>;
             }
         }
         j = <span class="hljs-number">0</span>;
-        while (j &lt; to)
+        <span class="hljs-keyword">while</span> (j &lt; to)
         {
-            PrintLine(<span class="hljs-number">40</span>, i, <span class="hljs-number">4</span>, true, false);
+            PrintLine(<span class="hljs-number">40</span>, i, <span class="hljs-number">4</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>);
             j = j + <span class="hljs-number">1</span>;
         }
         i = i + <span class="hljs-number">2</span>;
     }
 }
 
-fun PrintK() void
-{
-    int i;
-    int temp;
+<span class="hljs-function">fun <span class="hljs-title">PrintK</span><span class="hljs-params">()</span> <span class="hljs-keyword">void</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+    <span class="hljs-keyword">int</span> temp;
     i = <span class="hljs-number">0</span>;
-    while (i &lt; <span class="hljs-number">80</span>)
+    <span class="hljs-keyword">while</span> (i &lt; <span class="hljs-number">80</span>)
     {
         temp = <span class="hljs-number">40</span> - i;
-        if (temp &lt; <span class="hljs-number">5</span>)
+        <span class="hljs-keyword">if</span> (temp &lt; <span class="hljs-number">5</span>)
         {
             temp = temp - <span class="hljs-number">5</span>;
             temp = <span class="hljs-number">0</span> - temp;
@@ -344,51 +344,51 @@ fun PrintK() void
     }
 }
 
-fun beprofane(int width) void
-{
+<span class="hljs-function">fun <span class="hljs-title">beprofane</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width)</span> <span class="hljs-keyword">void</span>
+</span>{
     PrintF();
-    print <span class="hljs-number">1</span> endl;
-    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
     PrintU();
-    print <span class="hljs-number">1</span> endl;
-    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
     PrintC();
-    print <span class="hljs-number">1</span> endl;
-    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
+    print <span class="hljs-number">1</span> <span class="hljs-built_in">endl</span>;
     PrintK();
 }
 
-fun main() int
-{
+<span class="hljs-function">fun <span class="hljs-title">main</span><span class="hljs-params">()</span> <span class="hljs-keyword">int</span>
+</span>{
     beprofane(<span class="hljs-number">200</span>);
-    return <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre><h3 id="simps">Simps</h3>
 <p>simps.mini</p>
-<pre><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Calibration</span></span>
-{
-    int calibration;
-    int roll;
-    int pitch;
-    int yaw;
+<pre><code class=" hljs "><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Calibration</span>
+{</span>
+    <span class="hljs-keyword">int</span> calibration;
+    <span class="hljs-keyword">int</span> roll;
+    <span class="hljs-keyword">int</span> pitch;
+    <span class="hljs-keyword">int</span> yaw;
 };
 
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simple</span></span>
-{
-    int one;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simple</span>
+{</span>
+    <span class="hljs-keyword">int</span> one;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Calibration</span> <span class="hljs-title">cal</span>;</span>
 };
 
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span></span>
-{
-    bool isSimpy;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span>
+{</span>
+    <span class="hljs-keyword">bool</span> isSimpy;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simple</span> <span class="hljs-title">mySimp</span>;</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">nextSimp</span>;</span>
 };
 
-<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">makeSimps</span></span>(int simpcount) <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span></span>
-{
-    int i;
+<span class="hljs-function">fun <span class="hljs-title">makeSimps</span><span class="hljs-params">(<span class="hljs-keyword">int</span> simpcount)</span> struct Simps
+</span>{
+    <span class="hljs-keyword">int</span> i;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">firstSimp</span>;</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">currentSimp</span>;</span>
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">prevSimp</span>;</span>
@@ -399,8 +399,8 @@ fun main() int
     currentSimp = null;
     <span class="hljs-keyword">while</span> (i &lt; simpcount)
     {
-        currentSimp = new Simps;
-        currentSimp.mySimp = new Simple;
+        currentSimp = <span class="hljs-keyword">new</span> Simps;
+        currentSimp.mySimp = <span class="hljs-keyword">new</span> Simple;
         currentSimp.mySimp.one = i * i;
     currentSimp.nextSimp = null;
         <span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span> == (prevSimp == null))
@@ -418,8 +418,8 @@ fun main() int
     <span class="hljs-keyword">return</span> firstSimp;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">twitchDonation</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">void</span></span>
-{
+<span class="hljs-function">fun <span class="hljs-title">twitchDonation</span><span class="hljs-params">(struct Simps s)</span> <span class="hljs-keyword">void</span>
+</span>{
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
     {
         s.mySimp.one = s.mySimp.one * s.mySimp.one;
@@ -427,9 +427,9 @@ fun main() int
     }
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">amazonWishlist</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">int</span></span>
-{
-    int dollars;
+<span class="hljs-function">fun <span class="hljs-title">amazonWishlist</span><span class="hljs-params">(struct Simps s)</span> <span class="hljs-keyword">int</span>
+</span>{
+    <span class="hljs-keyword">int</span> dollars;
 
     dollars = <span class="hljs-number">0</span>;
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
@@ -441,22 +441,22 @@ fun main() int
     <span class="hljs-keyword">return</span> dollars;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">freedom</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">void</span></span>
-{
+<span class="hljs-function">fun <span class="hljs-title">freedom</span><span class="hljs-params">(struct Simps s)</span> <span class="hljs-keyword">void</span>
+</span>{
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">next</span>;</span>
     <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
     {
-        <span class="hljs-keyword">next</span> = s.nextSimp;
-        delete s.mySimp;
-        delete s;
-        s = <span class="hljs-keyword">next</span>;
+        next = s.nextSimp;
+        <span class="hljs-keyword">delete</span> s.mySimp;
+        <span class="hljs-keyword">delete</span> s;
+        s = next;
     }
 }
 
-<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span></span>() int
-{
+<span class="hljs-function">fun <span class="hljs-title">main</span><span class="hljs-params">()</span> <span class="hljs-keyword">int</span>
+</span>{
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">theSimps</span>;</span>
-    int tmp;
+    <span class="hljs-keyword">int</span> tmp;
 
     theSimps = makeSimps(<span class="hljs-number">4</span>);
     twitchDonation(theSimps);
@@ -478,4 +478,4 @@ fun main() int
     freedom(theSimps);
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div></div></body>                            </html>
