@@ -1,0 +1,481 @@
+<h1 id="-owie">&#39;OWIE</h1>
+<p><strong>we need to put in runtime instructions</strong>
+<strong>a bit of text for each chart? or some of them. some analysis</strong>
+<strong>word count charts and analysis</strong>
+<strong>glossary?</strong></p>
+<h3 id="what-happens-next-will-shock-you-">What happens next will shock you...</h3>
+<p>By Kevin Kellar and (Mostly) Justin Privitera</p>
+<h2 id="overview">Overview</h2>
+<p>Our compiler is written in Makefile interspersed with little bits of Racket here and there. A full language breakdown is visible in Figure 1. We actually began the quarter by writing our compiler in C++, but we had a change of heart 2 days before Milestone 1 was due, and switched accordingly.</p>
+<p><strong>Figure 1</strong></p>
+<p><img src="images/language_breakdown.png" alt="language_breakdown"></p>
+<p><em>Here you can see Github&#39;s language breakdown for our compiler.</em></p>
+<p><strong>Figure 2</strong></p>
+<p><img src="images/overview_diagram.png" alt="overview_diagram"></p>
+<p><em>This diagram gives an overview of our compiler. It displays the various phases of the compiler as well as what exactly is being passed between each phase.</em></p>
+<h3 id="parsing">Parsing</h3>
+<p>Our parser uses ANTLR and the provided Java parsing code to produce json files, which are then read into Racket using Racket&#39;s json library. These jsons are converted into hash tables which makes it easier to convert into our representation of an Abstract Syntax Tree (AST), which is a large number of structs representing all the different kinds of expressions, statements, as well as declarations and mini structs.</p>
+<h3 id="static-semantics">Static Semantics</h3>
+<p>Our type checker takes in an AST and begins by building a symbol table, a struct table, and the list of functions. It then proceeds to validate both of the tables, the function main, and every other function. To validate functions, our type checker validates the declarations, then works through the statements and expressions, returning false if anything fails to typecheck. We perform return path checking via recursively checking for return equivalence on each statement in a block and succeeding if at least one statement is return equivalent.</p>
+<h3 id="intermediate-representation">Intermediate Representation</h3>
+<p>The next step of our compiler is to convert an AST into a set of control flow graphs (CFGs), with one for each function. These CFGs are comprised of nodes which represent blocks of assembly code. Our CFGs contain LLVM instructions, which are represented as structs. Representing a program as a set of CFGs allows for a number of things, namely; relative ease in performing optimizations and static analysis, not to mention easy conversion to LLVM. Since LLVM is an industry standard, the optimizations and static analysis we will cover in the next section are grounded in industry practices and academic research. LLVM is flexible and well suited to performing optimizations and analysis. Additionally, since LLVM is sufficiently high-level, it can be translated to multiple different low level assembly languages. We also use Single Static Assignment (SSA Form), which has the benefit of simplifying properties of variables, forcing them to be assigned to exactly once and defined prior to being used. This has the consequence of improving the ease of performing static analysis and by extension, performing optimizations.</p>
+<h3 id="optimizations">Optimizations</h3>
+<p>We implemented the two following compiler optimizations.</p>
+<h4 id="constant-propagation">Constant Propagation</h4>
+<p>We used Sparse Conditional Constant Propagation (SCCP). SCCP functions by tracking executable blocks and recording for each variable whether or not it&#39;s value is provably constant. To determine this, we abstractly interpret certain instructions, such as arithmetic and boolean instructions. The interpretation is abstract because, since many values are not known during static analysis, we use theoretical values called &quot;top&quot; and &quot;bottom&quot; to represent values which are not yet proved constant or not constant and values which are not provably constant, respectively. The result of interpreting instructions containing &quot;top&quot; and &quot;bottom&quot; is determined by special rules. Once the analysis is performed, all uses of registers that store constant values are replaced with the constants.</p>
+<h4 id="useless-code-elimination">Useless Code Elimination</h4>
+<p>We use mark and sweep to eliminate useless code. We find all the essential instructions and essentially go backwards through the code, marking any instructions they depend on as essential. Once everything has been marked or left unmarked, we delete all the instructions that are not marked essential.</p>
+<h3 id="code-generation-and-register-allocation">Code Generation and Register Allocation</h3>
+<p>The next phase of our compiler is generating ARM Assembly. This is done by converting our intermediate representation of instructions into ARM, which is a fairly straightforward process for most instructions. After that phase is complete, we have ARM but with virtual registers. The final part of our compiler performs register allocation. To do this, we compute gen sets, kill sets, and liveout sets for each block in each CFG, and construct an interference graph using the method discussed in class. For graph coloring, we use a greedy scheme to find correct colorings of nodes. The last step is to use the generated colorings to allocate registers.</p>
+<p>One interesting aspect of our generated ARM is that we push all callee saved registers onto the stack at the beginning of each function. We also include descriptive comments in our ARM output. These were useful for debugging purposes.</p>
+<p>Finally, The phi instructions must be eliminated because ARM does not have phi instructions. We have to break SSA in order to eliminate the phi instructions. To do this in our compiler, we have each phi correspond to a virtual register (the cheater register) which all incoming blocks agree to assign to. Each phi instruction is then replaced with a move instruction from the cheater register to the result of the original phi instruction.</p>
+<h3 id="other">Other</h3>
+<p>We are proud of the CI and automated testing (try running make and seeing what happens &gt;:3) that we implemented. If we were to do this project again, we would use the knowledge from this compiler (i.e. what was difficult, organization, etc.) to inform our decisions and hopefully write a much cleaner, more elegant compiler.</p>
+<h2 id="analysis">Analysis</h2>
+<p><strong>Figure 3</strong></p>
+<p><img src="images/pi_cooling.png" alt="pi_cooling"></p>
+<p><em>Our Eco-friendly natural Raspberry Pi cooling system.</em></p>
+<h3 id="runtime">Runtime</h3>
+<p>The following charts compare runtimes for each milestone, demonstrating the effect our optimizations had on the code, among other things.</p>
+<h4 id="configurations-">Configurations:</h4>
+<ul>
+<li><strong>stk</strong> - stack based</li>
+<li><strong>reg</strong> - register based</li>
+<li><strong>O0</strong> - no optimizations</li>
+<li><strong>sccp</strong> - applies Sparse Conditional Constant propagation (ONLY)</li>
+<li><strong>uce</strong> - applies Useless Code Elimination (ONLY)</li>
+<li><strong>Oall</strong> - applies applying both sccp and uce</li>
+<li><strong>clang/gcc O0-O3</strong> - compiles the .c file with a &quot;real&quot; compiler and a level of optimization</li>
+</ul>
+<h4 id="experiment-types">Experiment Types</h4>
+<ul>
+<li><strong>M6 ARM Pi</strong> - running the result of our milestone 6 compiler on a raspberry pi</li>
+<li><strong>M6 ARM (dpt)</strong> - running the result of our milestone 6 compiler on one of the department raspberry pis</li>
+<li><strong>LLVM (on Pi)</strong> - running the result of our LLVM compiler on a raspberry pi (by clang-ing the .ll on the pi first)</li>
+<li><strong>C version</strong> - running the C-equivalent of the benchmark on the same raspberry pi as the <strong>M6 ARM Pi</strong></li>
+</ul>
+<h4 id="mixed">mixed</h4>
+<p><img src="images/plots/regular/mixed_plot.png" alt="mixed_plot">
+<img src="images/plots/longer/mixed_longer_plot.png" alt="longer_mixed_plot"></p>
+<p>Our optimizations, (SCCP and UCE) are able to improve the runtime of mixed in ARM form. Notably, the stack-based LLVM (when clangified and run) perform relatively poorly compared to our conversion to ARM assembly.</p>
+<h4 id="fact_sum">fact_sum</h4>
+<p><img src="images/plots/regular/fact_sum_plot.png" alt="fact_sum_plot">
+<img src="images/plots/longer/fact_sum_longer_plot.png" alt="longer_fact_sum_plot"></p>
+<p>This bench mark ran relatively quick, so it&#39;s unclear how appropriate it is to draw conclusions. However- it seems that our optimizations may slow down the runtime of this benchmark, while the C versions improve under optimizations.</p>
+<h4 id="simps">simps</h4>
+<p><img src="images/plots/regular/simps_plot.png" alt="simps_plot"></p>
+<h4 id="mile1">mile1</h4>
+<p><img src="images/plots/regular/mile1_plot.png" alt="mile1_plot">
+<img src="images/plots/longer/mile1_longer_plot.png" alt="longer_mile1_plot"></p>
+<p>The best optimization for this benchmark is to use register based assembly!</p>
+<!-- ![sccp_plot](images/plots/regular/sccp_plot.png) -->
+<h4 id="brett">brett</h4>
+<p><img src="images/plots/regular/brett_plot.png" alt="brett_plot">
+<img src="images/plots/longer/brett_longer_plot.png" alt="longer_brett_plot"></p>
+<h4 id="creativebenchmarkname">creativeBenchMarkName</h4>
+<p><img src="images/plots/regular/creativeBenchMarkName_plot.png" alt="creativeBenchMarkName_plot">
+<img src="images/plots/longer/creativeBenchMarkName_longer_plot.png" alt="longer_creativeBenchMarkName_plot"></p>
+<p>Similar to above: the best optimization for this benchmark is to use register based assembly. This benchmark appears to benefit very little from our optimization algorithms.</p>
+<h4 id="hailstone">hailstone</h4>
+<p><img src="images/plots/regular/hailstone_plot.png" alt="hailstone_plot">
+<img src="images/plots/longer/hailstone_longer_plot.png" alt="longer_hailstone_plot"></p>
+<h4 id="tictac">TicTac</h4>
+<p><img src="images/plots/regular/TicTac_plot.png" alt="TicTac_plot">
+<img src="images/plots/longer/TicTac_longer_plot.png" alt="longer_TicTac_plot"></p>
+<h4 id="binaryconverter">binaryConverter</h4>
+<p><img src="images/plots/regular/binaryConverter_plot.png" alt="binaryConverter_plot">
+<img src="images/plots/longer/binaryConverter_longer_plot.png" alt="longer_binaryConverter_plot"></p>
+<p>Similar. Our optimizations only slightly improve the runtime of this benchmark.</p>
+<!-- ![globals_plot](images/plots/regular/globals_plot.png) -->
+<h4 id="wasteofcycles">wasteOfCycles</h4>
+<p><img src="images/plots/regular/wasteOfCycles_plot.png" alt="wasteOfCycles_plot">
+<img src="images/plots/longer/wasteOfCycles_longer_plot.png" alt="longer_wasteOfCycles_plot"></p>
+<p>This benchmark runs very quickly- but it&#39;s possible our optimizations slow down the runtime?</p>
+<!-- ![iandj_plot](images/plots/regular/iandj_plot.png) -->
+<!-- ![ez_profanity_plot](images/plots/regular/ez_profanity_plot.png) -->
+<h4 id="programbreaker">programBreaker</h4>
+<p><img src="images/plots/regular/programBreaker_plot.png" alt="programBreaker_plot"></p>
+<p>The set of combined optimizations appear to improve the runtime of stack based ARM!</p>
+<h4 id="fibonacci">Fibonacci</h4>
+<p><img src="images/plots/regular/Fibonacci_plot.png" alt="Fibonacci_plot">
+<img src="images/plots/longer/Fibonacci_longer_plot.png" alt="longer_Fibonacci_plot"></p>
+<p>Even GCC and Clang struggle to optimize this benchmark. However- it&#39;s clear that those optimizations perform better than ours.</p>
+<h4 id="biggest">biggest</h4>
+<p><img src="images/plots/regular/biggest_plot.png" alt="biggest_plot">
+<img src="images/plots/longer/biggest_longer_plot.png" alt="longer_biggest_plot"></p>
+<h4 id="benchmarkishtopics">BenchMarkishTopics</h4>
+<p><img src="images/plots/regular/BenchMarkishTopics_plot.png" alt="BenchMarkishTopics_plot">
+<img src="images/plots/longer/BenchMarkishTopics_longer_plot.png" alt="longer_BenchMarkishTopics_plot"></p>
+<p>Unlike many of the other benchmarks, when looking at the longer graph, it appears that stack based optimizations struggle to significantly improve performance.</p>
+<!-- ![easy_simps_plot](images/plots/regular/easy_simps_plot.png) -->
+<h4 id="stats">stats</h4>
+<p><img src="images/plots/regular/stats_plot.png" alt="stats_plot"></p>
+<h4 id="generalfunctandoptimize">GeneralFunctAndOptimize</h4>
+<p><img src="images/plots/regular/GeneralFunctAndOptimize_plot.png" alt="GeneralFunctAndOptimize_plot">
+<img src="images/plots/longer/GeneralFunctAndOptimize_longer_plot.png" alt="longer_GeneralFunctAndOptimize_plot"></p>
+<p>Interestingly, our ARM assembly performs significantly slower than gcc/clang&#39;s O0 for this benchmark.</p>
+<h4 id="profanity">profanity</h4>
+<p><img src="images/plots/regular/profanity_plot.png" alt="profanity_plot"></p>
+<p>We suspect that the number of spills causes stack and register based assembly to perform similarly for this benchmark. For the ARM stack approach and the LLVM register approach- it appears that the SCCP optimization doesn&#39;t need the UCE optimization to improve runtime.</p>
+<h4 id="bert">bert</h4>
+<p><img src="images/plots/regular/bert_plot.png" alt="bert_plot">
+<img src="images/plots/longer/bert_longer_plot.png" alt="longer_bert_plot"></p>
+<h4 id="hanoi_benchmark">hanoi_benchmark</h4>
+<p><img src="images/plots/regular/hanoi_benchmark_plot.png" alt="hanoi_benchmark_plot">
+<img src="images/plots/longer/hanoi_benchmark_longer_plot.png" alt="longer_hanoi_benchmark_plot"></p>
+<p>One of the best graphs we made!</p>
+<h4 id="killerbubbles">killerBubbles</h4>
+<p><img src="images/plots/regular/killerBubbles_plot.png" alt="killerBubbles_plot">
+<img src="images/plots/longer/killerBubbles_longer_plot.png" alt="longer_killerBubbles_plot">
+<!-- ![loop_me_plot](images/plots/regular/loop_me_plot.png) --></p>
+<h4 id="primes">primes</h4>
+<p><img src="images/plots/regular/primes_plot.png" alt="primes_plot">
+<img src="images/plots/longer/primes_longer_plot.png" alt="longer_primes_plot"></p>
+<p>This plot looks similar to the mixed plot. For whatever reason, our own ARM generation is able to out perform clang&#39;s ARM generation (when it uses our LLVM IR).</p>
+<h4 id="optimizationbenchmark">OptimizationBenchmark</h4>
+<p><img src="images/plots/regular/OptimizationBenchmark_plot.png" alt="OptimizationBenchmark_plot">
+<img src="images/plots/longer/OptimizationBenchmark_longer_plot.png" alt="longer_OptimizationBenchmark_plot"></p>
+<p>This plot suggests that our optimizations improve register based assembly, but fails to improve the stack based implementations.</p>
+<h3 id="instruction-count">Instruction Count</h3>
+<p>The following charts detail the differences in instruction count before and after optimizations for each benchmark, as well as some custom files. Additionally, each chart shows 4 variants of each program, LLVM stack based, LLVM register based, ARM stack based, and ARM register based. The red color shows the line count prior to optimization, and the orange shows the line count afterwards. The same is true of blue and cyan, respectively.</p>
+<p>As can be seen in many of these plots, the stack based approach is not able to be optimized very much, while register based is almost always an improvement.</p>
+<h4 id="mixed">mixed</h4>
+<p><img src="images/plots/line_count/mixed_plot.png" alt="mixed_plot"></p>
+<h4 id="fact_sum">fact_sum</h4>
+<p><img src="images/plots/line_count/fact_sum_plot.png" alt="fact_sum_plot"></p>
+<h4 id="simps">simps</h4>
+<p><img src="images/plots/line_count/simps_plot.png" alt="simps_plot"></p>
+<h4 id="mile1">mile1</h4>
+<p><img src="images/plots/line_count/mile1_plot.png" alt="mile1_plot"></p>
+<p>The best optimization for this benchmark is to use register based assembly!</p>
+<h4 id="brett">brett</h4>
+<p><img src="images/plots/line_count/brett_plot.png" alt="brett_plot"></p>
+<h4 id="creativebenchmarkname">creativeBenchMarkName</h4>
+<p><img src="images/plots/line_count/creativeBenchMarkName_plot.png" alt="creativeBenchMarkName_plot"></p>
+<h4 id="hailstone">hailstone</h4>
+<p><img src="images/plots/line_count/hailstone_plot.png" alt="hailstone_plot"></p>
+<h4 id="tictac">TicTac</h4>
+<p><img src="images/plots/line_count/TicTac_plot.png" alt="TicTac_plot"></p>
+<h4 id="binaryconverter">binaryConverter</h4>
+<p><img src="images/plots/line_count/binaryConverter_plot.png" alt="binaryConverter_plot"></p>
+<!-- ![globals_plot](images/plots/line_count/globals_plot.png) -->
+<h4 id="wasteofcycles">wasteOfCycles</h4>
+<p><img src="images/plots/line_count/wasteOfCycles_plot.png" alt="wasteOfCycles_plot"></p>
+<h4 id="programbreaker">programBreaker</h4>
+<p><img src="images/plots/line_count/programBreaker_plot.png" alt="programBreaker_plot"></p>
+<h4 id="fibonacci">Fibonacci</h4>
+<p><img src="images/plots/line_count/Fibonacci_plot.png" alt="Fibonacci_plot"></p>
+<h4 id="biggest">biggest</h4>
+<p><img src="images/plots/line_count/biggest_plot.png" alt="biggest_plot"></p>
+<h4 id="benchmarkishtopics">BenchMarkishTopics</h4>
+<p><img src="images/plots/line_count/BenchMarkishTopics_plot.png" alt="BenchMarkishTopics_plot"></p>
+<h4 id="stats">stats</h4>
+<p><img src="images/plots/line_count/stats_plot.png" alt="stats_plot"></p>
+<h4 id="generalfunctandoptimize">GeneralFunctAndOptimize</h4>
+<p><img src="images/plots/line_count/GeneralFunctAndOptimize_plot.png" alt="GeneralFunctAndOptimize_plot"></p>
+<h4 id="profanity">profanity</h4>
+<p><img src="images/plots/line_count/profanity_plot.png" alt="profanity_plot"></p>
+<h4 id="bert">bert</h4>
+<p><img src="images/plots/line_count/bert_plot.png" alt="bert_plot"></p>
+<h4 id="hanoi_benchmark">hanoi_benchmark</h4>
+<p><img src="images/plots/line_count/hanoi_benchmark_plot.png" alt="hanoi_benchmark_plot"></p>
+<h4 id="killerbubbles">killerBubbles</h4>
+<p><img src="images/plots/line_count/killerBubbles_plot.png" alt="killerBubbles_plot"></p>
+<h4 id="primes">primes</h4>
+<p><img src="images/plots/line_count/primes_plot.png" alt="primes_plot"></p>
+<h4 id="optimizationbenchmark">OptimizationBenchmark</h4>
+<p><img src="images/plots/line_count/OptimizationBenchmark_plot.png" alt="OptimizationBenchmark_plot"></p>
+<h2 id="conclusion">Conclusion</h2>
+<h3 id="notes">Notes</h3>
+<p>An interesting project would be to investigate why ARM code generated by clang reading our intermediate representation fails to outperform our own ARM generation for primes and mixed.</p>
+<p>Our code quality suffered early in the quarter, and we began to unconciously priorize the shock factor when reading surprising lines of code over writing clear code.</p>
+<h3 id="final-words">Final Words</h3>
+<p>This class was unique in that it felt like a sort of a capstone class. What we mean by that is it applied concepts from almost all of the major courses that we have taken over the past 4 years, including but not limited to Systems Programming, Programming Languages, Algorithms, Data Structures, Software Engineeering, and Computer Architecture, to name a few. It was undoubtedly comprehensive, and we are glad we were able to complete the compiler in its entirety. Given more time, we would take time to refine our work, improve the code quality, and investigate performance discrepancies that are apparent in the Analysis section of this paper. Given even more time, we would start from scratch (for the 3rd time), using the learnings from this class to inform our process and decision making.</p>
+<h2 id="appendix-a-additional-mini-programs-used-in-testing">Appendix A: Additional Mini Programs Used in Testing</h2>
+<h3 id="profanity">Profanity</h3>
+<p>profanity.mini</p>
+<pre><code>fun PrintOnesOnly(int width) void
+{
+    PrintLine(width, <span class="hljs-number">101000</span>, <span class="hljs-number">0</span>, false, true);
+}
+
+fun PrintLeftAnd(int width, int leftcount, int num, int thicc) void
+{
+    int i;
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; leftcount)
+    {
+        print <span class="hljs-number">1</span>;
+        i = i + <span class="hljs-number">1</span>;
+    }
+    PrintLine(width - leftcount, num - leftcount, thicc, false, false);
+}
+
+fun PrintLine(int width, int num, int thicc, bool mirrored,
+              bool oppositeday) void
+{
+    int i;
+    bool temp;
+    bool do0;
+
+    i = <span class="hljs-number">0</span>;
+    while (i &lt;= width)
+    {
+    temp = (i &lt; num || (mirrored &amp;&amp; i &gt; width - num));
+    do0 = ((!temp) &amp;&amp; (i &lt; num + thicc || (i &gt; width - num - thicc &amp;&amp; mirrored))) ;
+        if ((oppositeday &amp;&amp; do0) || (!oppositeday &amp;&amp; !do0))
+        {
+            if (i == width)
+            {
+                print <span class="hljs-number">0</span> endl;
+            }
+            else
+            {
+                print <span class="hljs-number">0</span>;
+            }
+        }
+        else
+        {
+            if (i == width)
+            {
+                print <span class="hljs-number">1</span> endl;
+            }
+            else
+            {
+                print <span class="hljs-number">1</span>;
+            }
+        }
+        i = i + <span class="hljs-number">1</span>;
+    }
+}
+
+fun PrintF() void
+{
+    int i;
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; <span class="hljs-number">6</span>)
+    {
+        PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
+        i = i + <span class="hljs-number">1</span>;
+    }
+
+    PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">20</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
+    PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">20</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
+
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; <span class="hljs-number">20</span> - <span class="hljs-number">6</span> - <span class="hljs-number">6</span>)
+    {
+        PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">5</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
+        i = i + <span class="hljs-number">1</span>;
+    }
+}
+
+fun PrintC() void
+{
+    int i;
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; <span class="hljs-number">12</span>)
+    {
+        PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">6</span>, <span class="hljs-number">100000</span>, <span class="hljs-number">0</span>);
+        i = i + <span class="hljs-number">1</span>;
+    }
+
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+    PrintOnesOnly(<span class="hljs-number">40</span>);
+}
+
+fun PrintU() void
+{
+    int i;
+    int j;
+    int to;
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; <span class="hljs-number">21</span>)
+    {
+        if (i &lt; <span class="hljs-number">8</span>)
+        {
+            to = <span class="hljs-number">3</span>;
+        }
+        else
+        {
+            if (i / <span class="hljs-number">3</span> * <span class="hljs-number">3</span> == i)
+            {
+                to = <span class="hljs-number">1</span>;
+            }
+            else
+            {
+                to = <span class="hljs-number">0</span>;
+            }
+        }
+        j = <span class="hljs-number">0</span>;
+        while (j &lt; to)
+        {
+            PrintLine(<span class="hljs-number">40</span>, i, <span class="hljs-number">4</span>, true, false);
+            j = j + <span class="hljs-number">1</span>;
+        }
+        i = i + <span class="hljs-number">2</span>;
+    }
+}
+
+fun PrintK() void
+{
+    int i;
+    int temp;
+    i = <span class="hljs-number">0</span>;
+    while (i &lt; <span class="hljs-number">80</span>)
+    {
+        temp = <span class="hljs-number">40</span> - i;
+        if (temp &lt; <span class="hljs-number">5</span>)
+        {
+            temp = temp - <span class="hljs-number">5</span>;
+            temp = <span class="hljs-number">0</span> - temp;
+            temp = temp - <span class="hljs-number">5</span>;
+        }
+        PrintLeftAnd(<span class="hljs-number">40</span>, <span class="hljs-number">5</span>, temp - <span class="hljs-number">8</span>, <span class="hljs-number">8</span>);
+        i = i + <span class="hljs-number">4</span>;
+    }
+}
+
+fun beprofane(int width) void
+{
+    PrintF();
+    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> endl;
+    PrintU();
+    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> endl;
+    PrintC();
+    print <span class="hljs-number">1</span> endl;
+    print <span class="hljs-number">1</span> endl;
+    PrintK();
+}
+
+fun main() int
+{
+    beprofane(<span class="hljs-number">200</span>);
+    return <span class="hljs-number">0</span>;
+}
+</code></pre><h3 id="simps">Simps</h3>
+<p>simps.mini</p>
+<pre><code><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Calibration</span></span>
+{
+    int calibration;
+    int roll;
+    int pitch;
+    int yaw;
+};
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simple</span></span>
+{
+    int one;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Calibration</span> <span class="hljs-title">cal</span>;</span>
+};
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span></span>
+{
+    bool isSimpy;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simple</span> <span class="hljs-title">mySimp</span>;</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">nextSimp</span>;</span>
+};
+
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">makeSimps</span></span>(int simpcount) <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span></span>
+{
+    int i;
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">firstSimp</span>;</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">currentSimp</span>;</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">prevSimp</span>;</span>
+
+    i = <span class="hljs-number">0</span>;
+    firstSimp = null;
+    prevSimp = null;
+    currentSimp = null;
+    <span class="hljs-keyword">while</span> (i &lt; simpcount)
+    {
+        currentSimp = new Simps;
+        currentSimp.mySimp = new Simple;
+        currentSimp.mySimp.one = i * i;
+    currentSimp.nextSimp = null;
+        <span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span> == (prevSimp == null))
+        {
+            prevSimp.nextSimp = currentSimp;
+        }
+        <span class="hljs-keyword">else</span>
+        {
+            firstSimp = currentSimp;
+        }
+        prevSimp = currentSimp;
+
+        i = i + <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> firstSimp;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">twitchDonation</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">void</span></span>
+{
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
+    {
+        s.mySimp.one = s.mySimp.one * s.mySimp.one;
+        s = s.nextSimp;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">amazonWishlist</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">int</span></span>
+{
+    int dollars;
+
+    dollars = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
+    {
+        dollars = dollars + s.mySimp.one;
+        s = s.nextSimp;
+    }
+
+    <span class="hljs-keyword">return</span> dollars;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">freedom</span></span>(<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">s</span>) <span class="hljs-title">void</span></span>
+{
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">next</span>;</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">false</span> == (s == null))
+    {
+        <span class="hljs-keyword">next</span> = s.nextSimp;
+        delete s.mySimp;
+        delete s;
+        s = <span class="hljs-keyword">next</span>;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span></span>() int
+{
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Simps</span> <span class="hljs-title">theSimps</span>;</span>
+    int tmp;
+
+    theSimps = makeSimps(<span class="hljs-number">4</span>);
+    twitchDonation(theSimps);
+    tmp = amazonWishlist(theSimps);
+    <span class="hljs-keyword">if</span> (!(tmp == <span class="hljs-number">98</span>))
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>;
+    }
+
+    freedom(theSimps);
+
+    theSimps = makeSimps(<span class="hljs-number">81</span>);
+    twitchDonation(theSimps);
+    <span class="hljs-keyword">if</span> (amazonWishlist(theSimps) != <span class="hljs-number">676010664</span>)
+    {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">4</span>;
+    }
+
+    freedom(theSimps);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
