@@ -1,10 +1,5 @@
 # 'OWIE
 
-**we need to put in runtime instructions**
-**a bit of text for each chart? or some of them. some analysis**
-**word count charts and analysis**
-**glossary?**
-
 ### What happens next will shock you...
 
 By Kevin Kellar and (Mostly) Justin Privitera
